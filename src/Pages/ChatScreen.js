@@ -58,26 +58,16 @@ const ChatScreen = () => {
                 <Typography sx={{ flexGrow: 1 }} variant="h6" color="inherit" noWrap>
                     Chat App
                 </Typography>
-
                 <Button color="inherit" onClick={handleLogout}>Logout</Button>
             </Toolbar>
         </AppBar>
         <main>
-            <Box
-                sx={{
-                    bgcolor: 'background.paper',
-                    pt: 2,
-                    pb: 6,
-                }}
-            >
+            <Box sx={{ bgcolor: 'background.paper', pt: 2, pb: 6 }}>
                 <Container maxWidth="sm">
-
                     <Box sx={{ display: "flex" , flexDirection: "row-reverse" }}>
                         <Typography variant="subtitle1" component="span" color="#747474">Username: <Typography color="#000" component="span" fontWeight="bold">{user.name}</Typography> </Typography>
                     </Box>
-
                     <ChatMessageList ref={chatContainer}/>
-
                     <ChatInput inputProps={{ placeholder: "Enter message to send" }}
                                clearOnSend
                                onSend={handleSendMessage}/>
