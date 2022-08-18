@@ -19,14 +19,18 @@ export function useRepository(){
     useEffect(() => {
 
         console.log("Subscribing");
+        let isUpdating = false;
         const unlisten = store.subscribe(() => {
-            const { messages , users } = store.getState();
-            setItem("messages",messages);
-            setItem("users",users);
+            if(!isUpdating){
+                const { messages , users } = store.getState();
+                setItem("messages",messages.data);
+                setItem("users",users);
+            }
+
         });
 
         function handleStorageChanged(evt){
-            console.log("Changed: ",evt);
+            isUpdating = true;
             switch (evt.key){
                 case "messages":
                     store.dispatch({ type: UPDATE_MESSAGE , payload: { messages: getItem("messages") } });
@@ -35,6 +39,7 @@ export function useRepository(){
                     store.dispatch({ type: UPDATE_USERS , payload: { users: getItem("users") } })
                     break;
             }
+            isUpdating = false;
         }
 
         window.addEventListener("storage",handleStorageChanged,false);

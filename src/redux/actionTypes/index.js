@@ -3,3 +3,4 @@ export const UPDATE_MESSAGE = "UPDATE_MESSAGE";
 export const UPDATE_USERS = "UPDATE_USERS";
 export const ADD_USER = "ADD_USER";
 export const LOGOUT = "LOGOUT_USER";
+export const FETCH_MORE_MESSAGES = "FETCH_MORE_MESSAGES";

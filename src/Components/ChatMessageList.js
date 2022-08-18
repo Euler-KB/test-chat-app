@@ -1,26 +1,37 @@
-import { MessageList } from "react-chat-elements";
-import {useSelector} from "react-redux";
+import {MessageBox} from "react-chat-elements";
+import {useDispatch, useSelector} from "react-redux";
 import {selectCurrentUser, selectMessages} from "../redux/selectors";
 import {Paper} from "@mui/material";
-import { forwardRef } from "react";
+import {forwardRef} from "react";
+import {Waypoint} from "react-waypoint";
+import "./ChatMessageList.css";
+import { FETCH_MORE_MESSAGES} from "../redux/actionTypes";
 
-const ChatMessageList = forwardRef((props,ref) => {
+const ChatMessageList = forwardRef((props, ref) => {
 
-    const messages = useSelector(selectMessages);
+    const dispatch = useDispatch();
+    const { pagination: { canLoadMore, data: messages } } = useSelector(selectMessages);
     const user = useSelector(selectCurrentUser);
 
-    return <Paper sx={{ height: 380 , mb: 2 , overflow: "auto" , display: "flex" , flexDirection: "column-reverse" }} ref={ref}>
-        <MessageList
-            lockable={true}
-            dataSource={messages.map(message => ({
-                position: user.id === message.sender.id ? "right" : "left" ,
-                type: "text",
-                title: message.sender.name,
-                avatar: `https://i.pravatar.cc/150?u=${message.sender.name}`,
-                text: message.content,
-                date: message.sentAt
-            }))}
-        />
+    function onEnter() {
+        if (canLoadMore) {
+           dispatch({ type: FETCH_MORE_MESSAGES });
+        }
+    }
+
+    return <Paper sx={{height: 380, mb: 2, overflow: "auto", display: "flex", flexDirection: "column-reverse"}}
+                  ref={ref}>
+        {messages.map((message, key) => (<MessageBox
+            key={key}
+            position={user.id === message.sender.id ? "right" : "left"}
+            type="text"
+            title={message.sender.name}
+            avatar={`https://i.pravatar.cc/150?u=${message.sender.name}`}
+            text={message.content}
+            date={message.sentAt}
+            className={"message-box"}
+        />))}
+        <Waypoint onEnter={onEnter} topOffset="-20%"/>
     </Paper>
 });
 
