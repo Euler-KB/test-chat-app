@@ -18,7 +18,6 @@ export function useRepository(){
 
     useEffect(() => {
 
-        console.log("Subscribing");
         let isUpdating = false;
         const unlisten = store.subscribe(() => {
             if(!isUpdating){
@@ -45,7 +44,6 @@ export function useRepository(){
         window.addEventListener("storage",handleStorageChanged,false);
 
         return () => {
-            console.log("Unsubscribing (:");
             window.removeEventListener("storage",handleStorageChanged);
             unlisten();
         };
